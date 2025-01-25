@@ -9,13 +9,16 @@ const bcrypt = require("bcrypt");
  * @typedef { Object } UserObject
  * 
  * @property { String } username
+ * @property { String } password - Password (hashed).
+ * @property { String } id
+ * @property { Number } registerDate - Timestamp of register.
  */
 
 /**
  * Reads & parses users.json.
  */
 async function readAndParseUsersFile() {
-    const content = fs.promises.readFile(path.join(__dirname, "/data/users.json"));
+    const content = await fs.promises.readFile(path.join(__dirname, "../data/users.json"));
     const users = JSON.parse(content);
     return users;
 }
@@ -64,7 +67,7 @@ async function getUserByUsername(username) {
  * 
  * @param { String } username
  * @param { String } password
- * @returns { Promise<void> }
+ * @returns { Promise<UserObject> }
  */
 function newUser(username, password) {
     return new Promise(async(resolve, reject) => {
@@ -86,16 +89,21 @@ function newUser(username, password) {
         const hashedPwd = await hashPassword(password);
         const newId = uuid();
 
-        // Add user to json file and save.
-        users[newId] = {
+        const userObj = {
             username,
             password: hashedPwd,
             id: newId
         };
 
+        // Add user to json file and save.
+        users[newId] = userObj;
+
         await fs.promises.writeFile(path.join(__dirname, "../data/users.json"), JSON.stringify(users), "utf-8")
-            .then(resolve)
-            .catch(reject);
+            .then(() => resolve(userObj))
+            .catch((error) => {
+                console.error("Error saving users file:", error);
+                reject("Unexpected Server Error");
+            });
     });
 }
 

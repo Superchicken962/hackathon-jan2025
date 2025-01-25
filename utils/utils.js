@@ -49,9 +49,10 @@ function createAllFolders() {
  * @returns { Promise<void> } Promise for completion.
  */
 function createAllFiles() {
-    const files = [{
-        path: path.join(__dirname, "../data/users.json"), empty: "{}"
-    }];
+    const files = [
+        { path: path.join(__dirname, "../data/users.json"), empty: "{}" },
+        { path: path.join(__dirname, "../data/access_tokens.json"), empty: "{}" }
+    ];
 
     return Promise.all(files.map(async(file) => {
         if (!fs.existsSync(file.path)) {
@@ -60,8 +61,27 @@ function createAllFiles() {
     }));
 }
 
+/**
+ * Generates a random code.
+ * 
+ * @param { Number } length - Length of code.
+ * @returns { String } Generated code.
+ */
+function generateRandomCode(length) {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let code = "";
+
+    for (let i = 0; i < length; i++) {
+        const randomChar = Math.floor(Math.random() * chars.length);
+        code += chars[randomChar];
+    }
+
+    return code;
+}
+
 module.exports = {
     buildJsonError,
     createAllFolders,
-    createAllFiles
+    createAllFiles,
+    generateRandomCode
 }
