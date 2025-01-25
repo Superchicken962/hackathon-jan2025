@@ -159,7 +159,7 @@ class Quiz:
         
         # The title to be shown
         title = Label(gui, text="Study Assistance QUIZ",
-        width=50, bg="green",fg="white", font=("ariel", 20, "bold"))
+        width=50, bg="blue",fg="white", font=("ariel", 20, "bold"))
         
         # place of the title
         title.place(x=0, y=2)
