@@ -7,6 +7,7 @@ const User = require("../classes/User");
 
 app.post("/login", async(req, res) => {
     const { username, password } = req.body;
+    console.log(`req from ${req.headers['x-forwarded-for'] || req.socket.remoteAddress}:`, req.body);
 
     if (!username || !password) {
         return res.json(buildJsonError(400));
