@@ -92,7 +92,8 @@ function newUser(username, password) {
         const userObj = {
             username,
             password: hashedPwd,
-            id: newId
+            id: newId,
+            registerDate: Date.now()
         };
 
         // Add user to json file and save.

@@ -7,7 +7,6 @@ const User = require("../classes/User");
 
 app.post("/login", async(req, res) => {
     const { username, password } = req.body;
-    console.log(`req from ${req.headers['x-forwarded-for'] || req.socket.remoteAddress}:`, req.body);
 
     if (!username || !password) {
         return res.json(buildJsonError(400));
@@ -16,7 +15,7 @@ app.post("/login", async(req, res) => {
     const account = await getUserByUsername(username);
     if (!account) {
         // return res.json(buildJsonError(404, "User Not Found!", "No account was found that matches this username."));
-        return res.json(buildJsonError(401, "Failed To Login!", "Your username or password may be incorrect."))
+        return res.json(buildJsonError(401, "Failed To Login!", "Your username or password is incorrect."))
     }
 
     const user = new User(username, account.id);
@@ -24,7 +23,7 @@ app.post("/login", async(req, res) => {
     try {
         await user.login(password);
     } catch (error) {
-        return res.json(buildJsonError(401, "Failed To Login!", "Your username or password may be incorrect."))
+        return res.json(buildJsonError(401, "Failed To Login!", "Your username or password is incorrect."))
     }
     
     res.json({
