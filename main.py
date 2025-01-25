@@ -28,7 +28,7 @@ choice_btns = []
 for choice in range(4):
     button = ttk.Button(
         root,
-        command=lambda choice=choice; check_answer(choice)
+        command=lambda choice=choice: check_answer(choice)
     )
     button.pack(pady=5)
     choice_btns.append(button)
