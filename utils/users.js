@@ -175,11 +175,28 @@ async function getUserByAccessToken(token) {
     return userInfo;
 }
 
+/**
+ * Validates access token in a route.
+ * 
+ * @param { String } token - Token to check.
+ * @returns { Promise<Boolean> } Is token valid?
+ */
+async function validateUserAccessToken(token) {
+    if (!token) return false;
+
+    const user = await getUserByAccessToken(token);
+
+    if (!user) return false;
+
+    return true;
+}
+
 module.exports = {
     getUserById,
     getUserByUsername,
     newUser,
     getAccessToken,
     saveAccessToken,
-    getUserByAccessToken
+    getUserByAccessToken,
+    validateUserAccessToken
 }

@@ -1,11 +1,14 @@
 const express = require("express");
+const { validateUserAccessToken } = require("../utils/users");
+const { buildJsonError } = require("../utils/utils");
 const app = express.Router();
 
-app.get("/get", (req, res) => {
-    res.sendStatus(501);
-});
+app.get("/:id/questions", async (req, res) => {
+    const validToken = await validateUserAccessToken(req.cookies.access_token);
+    if (!validToken) {
+        res.json(buildJsonError(401, "Unauthorised", "Login to access the questions."));
+    }
 
-app.get("/:id/questions", (req, res) => {
     const sample = {
         questions: [
             "Q1. What's 25 + 72?",
@@ -46,11 +49,16 @@ app.get("/:id/questions", (req, res) => {
             ]
         ]
     };
+
     res.json(sample);
 });
 
-app.get("/:id/leaderboard", (req, res) => {
-    
-});
+// app.get("/:id/leaderboard", (req, res) => {
+
+// });
+
+// app.post("/:id/update", (req, res) => {
+
+// });
 
 module.exports = app;
