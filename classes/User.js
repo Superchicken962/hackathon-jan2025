@@ -1,4 +1,4 @@
-const { getUserById, newUser, getUserByUsername } = require("../utils/users");
+const { getUserById, newUser, getUserByUsername, saveAccessToken } = require("../utils/users");
 const { generateRandomCode } = require("../utils/utils");
 const bcrypt = require("bcrypt");
 
@@ -51,6 +51,7 @@ class User {
 
         // Generate a new access token when logging in.
         this.generateAccessToken();
+        await saveAccessToken(account.id, this.accessToken);
     }
 }
 

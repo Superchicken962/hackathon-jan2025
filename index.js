@@ -4,6 +4,7 @@ const config = require("./config.json");
 const PORT = config?.production ? 80 : 3000;
 const bodyParser = require("body-parser");
 const { buildJsonError, createAllFolders, createAllFiles } = require("./utils/utils");
+const { getUserByAccessToken } = require("./utils/users");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -13,6 +14,10 @@ app.get("/test", (req, res) => {
 });
 
 app.use("/auth", require("./routes/auth"));
+
+app.get("/whoami", async(req, res) => {
+
+});
 
 // Handle error 404s.
 app.use("*", (req, res) => {

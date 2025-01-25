@@ -17,8 +17,8 @@ const bcrypt = require("bcrypt");
 /**
  * Reads & parses users.json.
  */
-async function readAndParseUsersFile() {
-    const content = await fs.promises.readFile(path.join(__dirname, "../data/users.json"));
+async function readAndParseFile(fileName) {
+    const content = await fs.promises.readFile(path.join(__dirname, `../data/${fileName}.json`));
     const users = JSON.parse(content);
     return users;
 }
@@ -33,7 +33,7 @@ async function getUserById(id) {
     let users;
 
     try {
-        users = await readAndParseUsersFile();
+        users = await readAndParseFile("users");
     } catch (error) {
         console.error("Error parsing users file!");
         return null;
@@ -53,7 +53,7 @@ async function getUserByUsername(username) {
     let users;
 
     try {
-        users = await readAndParseUsersFile();
+        users = await readAndParseFile("users");
     } catch (error) {
         console.error("Error parsing users file!");
         return null;
@@ -74,7 +74,7 @@ function newUser(username, password) {
         let users;
 
         try {
-            users = await readAndParseUsersFile();
+            users = await readAndParseFile("users");
         } catch (error) {
             console.error("Error parsing users file!");
             return reject("Unexpected Server Error");
@@ -127,8 +127,58 @@ function hashPassword(pwd) {
     });
 }
 
+/**
+ * Reads access token from files.
+ * 
+ * @param { String } userId - user to get token for.
+ */
+async function getAccessToken(userId) {
+    const tokens = await readAndParseFile("access_tokens");
+}
+
+/**
+ * Stores access token for user.
+ * 
+ * @param { String } userId - User to store token for.
+ * @param { String } token - Token to store.
+ */
+async function saveAccessToken(userId, token) {
+    const tokens = await readAndParseFile("access_tokens");
+    tokens[userId] = token;
+    return fs.promises.writeFile(path.join(__dirname, "../data/access_tokens.json"), JSON.stringify(tokens), "utf-8");
+}
+
+/**
+ * Gets user info given an access token.
+ * 
+ * @param { String } token
+ * @returns { Promise<UserObject | null> }
+ */
+async function getUserByAccessToken(token) {
+    const tokens = await readAndParseFile("access_tokens");
+    const reversed = {};
+
+    for (const [key, val] of Object.entries(tokens)) {
+        reversed[val] = key;
+    }
+
+    const userId = reversed[token];
+    let userInfo;
+
+    if (!userId) return null;
+
+    if (userId) {
+        userInfo = await getUserById(userId);
+    }
+
+    return userInfo;
+}
+
 module.exports = {
     getUserById,
     getUserByUsername,
-    newUser
+    newUser,
+    getAccessToken,
+    saveAccessToken,
+    getUserByAccessToken
 }

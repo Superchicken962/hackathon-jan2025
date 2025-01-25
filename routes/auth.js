@@ -5,10 +5,6 @@ const { buildJsonError } = require("../utils/utils");
 const { getUserByUsername } = require("../utils/users");
 const User = require("../classes/User");
 
-app.get("/", (req, res) => {
-    res.json({"message": "acknowledged"});
-});
-
 app.post("/login", async(req, res) => {
     const { username, password } = req.body;
 
