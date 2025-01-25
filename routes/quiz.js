@@ -4,10 +4,10 @@ const { buildJsonError } = require("../utils/utils");
 const app = express.Router();
 
 app.get("/:id/questions", async (req, res) => {
-    const validToken = await validateUserAccessToken(req.cookies.access_token);
-    if (!validToken) {
-        res.json(buildJsonError(401, "Unauthorised", "Login to access the questions."));
-    }
+    // const validToken = await validateUserAccessToken(req.cookies.access_token);
+    // if (!validToken) {
+    //     return res.json(buildJsonError(401, "Unauthorised", "Login to access the questions."));
+    // }
 
     const sample = {
         questions: [
