@@ -1,7 +1,6 @@
 from main import MainDashboard
 from tkinter import *
 import requests
-from quizapp import Quiz as QuizPage
 
 def login_req():
     URL = "https://hackathon.markgurney.dev/auth/login"
@@ -22,8 +21,8 @@ def login_req():
     file = open('access_token.txt', "a")
     file.write(access_token)
 
-    # Change page
-    QuizPage()
+    # TODO: Change page
+    errorLabel.config(text="Logged In!")
 
 
 loginPage = MainDashboard()

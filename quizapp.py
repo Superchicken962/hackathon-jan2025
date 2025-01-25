@@ -207,6 +207,9 @@ cookies = {'access_token': access_token}
 r = requests.get(url = URL, cookies=cookies)
 data = r.json()
 
+if 'error' in data:
+    print("Error getting questions", data['error'])
+
 # set the question, options, and answer
 question = (data['questions'])
 options = (data['options'])
