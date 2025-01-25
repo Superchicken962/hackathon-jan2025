@@ -8,4 +8,4 @@ class MainDashboard(Tk):
         self.geometry('1200x1080')
         self.minsize(600, 600)
         self.maxsize(1200, 1080)
-        self.configure(bg='lightblue')
+        self.configure(bg='grey')

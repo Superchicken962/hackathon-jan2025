@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox as mb
 import json
 import time 
+import requests
 
 class Quiz:
 
@@ -78,10 +79,6 @@ class Quiz:
         
     # This method is used to check the answer of the
     # current question by calling the check_ans and question no.
-    # if the question is correct it increases the count by 1
-    # and then increase the question number by 1. If it is last
-    # question then it calls display result to show the message box.
-    # otherwise shows next question.
     def next_btn(self):
         
         # Check if the answer is correct
@@ -105,13 +102,8 @@ class Quiz:
             # shows the next question
             self.display_question()
             self.display_options()
+            
     # This method shows the two buttons on the screen.
-    # The first one is the next_button which moves to next question
-    # It has properties like what text it shows the functionality,
-    # size, color, and property of text displayed on button. Then it
-    # mentions where to place the button on the screen. The second
-    # button is the exit button which is used to close the GUI without
-    # completing the quiz.
     def buttons(self):
         
         # The first button is the Next button to move to the
@@ -130,9 +122,6 @@ class Quiz:
         quit_button.place(x=700,y=50)
 
     # This method deselect the radio button on the screen
-    # Then it is used to display the options available for the current
-    # question which we obtain through the question number and Updates
-    # each of the options for the current question of the radio button.
     def display_options(self):
         val=0
         
@@ -203,14 +192,25 @@ gui.geometry("800x450")
 # set the title of the Window
 gui.title("Study Assistance Quiz")
 
+access_token = None
+
 # get the data from the json file
-with open('data.json') as f:
-    data = json.load(f)
+try:
+    with open('access_token.txt') as f:
+        access_token = json.load(f)
+except:
+    access_token = ""
+
+URL = "https://hackathon.markgurney.dev/quiz/1/questions"
+cookies = {'access_token': access_token}
+
+r = requests.get(url = URL, cookies=cookies)
+data = r.json()
 
 # set the question, options, and answer
-question = (data['question'])
+question = (data['questions'])
 options = (data['options'])
-answer = (data[ 'answer'])
+answer = (data[ 'answers'])
 
 # create an object of the Quiz Class.
 quiz = Quiz()

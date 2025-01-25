@@ -1,11 +1,11 @@
 {
-    "question": [
+    "questions": [
      "Q1. What's 25 + 72?",
      "Q2. What's 88/11?",
      "Q3. What's 5 x 7?",
      "Q4. What's 35 - 7?"   
     ],
-    "answer": [
+    "answers": [
         1,
         2,
         3,
